@@ -39,4 +39,11 @@ jobs:
         mongoimport --db UniversalDB --collection games --file UniversalDB.games.json --jsonArray
 
     - name: Run tests
-     
+      env:
+        MONGO_USER: root
+        MONGO_PASSWORD: example
+        MONGO_HOST: localhost
+        MONGO_PORT: 27017
+        MONGO_DB_NAME: testdb
+      run: |
+        python -m unittest discover tests
