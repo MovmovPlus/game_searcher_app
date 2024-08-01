@@ -6,17 +6,19 @@ import os
 
 app = Flask(__name__)
 
+
 def connect_to_db():
     try:
         # Get MongoDB credentials from environment variables
-        mongo_user = os.environ.get('MONGO_USER')
-        mongo_password = os.environ.get('MONGO_PASSWORD')
-        mongo_host = os.environ.get('MONGO_HOST', 'localhost')
-        mongo_port = os.environ.get('MONGO_PORT', '27017')
-        mongo_db_name = os.environ.get('MONGO_DB_NAME', 'UniversalDB')
+        mongo_root_user = os.environ.get('MONGO_INITDB_ROOT_USERNAME')
+        mongo_root_password = os.environ.get('MONGO_INITDB_ROOT_PASSWORD')
+        mongo_host = os.environ.get('MONGO_HOST')
+        mongo_port = os.environ.get('MONGO_PORT')
+        mongo_db_name = os.environ.get('MONGODB_DATABASE')
 
         # Connection URI
-        connection_uri = f'mongodb://{quote_plus(mongo_user)}:{quote_plus(mongo_password)}@{mongo_host}:{mongo_port}/{mongo_db_name}?authSource=admin'
+        connection_uri = f'mongodb://{mongo_root_user}:{mongo_root_password}@{mongo_host}:{mongo_port}/{mongo_db_name}?authSource=admin'
+        print(f"Connecting to: {connection_uri}")
         client = MongoClient(connection_uri)
         db = client[mongo_db_name]
 
@@ -25,10 +27,12 @@ def connect_to_db():
         print(f"Failed to connect to the database. Error: {e}")
         return None
 
+
 def convert_objectid_to_str(doc):
     if '_id' in doc and isinstance(doc['_id'], ObjectId):
         doc['_id'] = str(doc['_id'])
     return doc
+
 
 @app.route('/')
 def home():
@@ -67,6 +71,7 @@ def home():
     '''
     return render_template_string(html_content)
 
+
 @app.route('/games/by-name')
 def get_game_by_name():
     game_name = request.args.get('game_name')
@@ -79,6 +84,7 @@ def get_game_by_name():
         return render_template_string(render_game(game))
     else:
         return jsonify({"error": "Game not found"}), 404
+
 
 @app.route('/games/by-studio')
 def get_games_by_studio():
@@ -94,6 +100,7 @@ def get_games_by_studio():
     else:
         return jsonify({"error": "No games found"}), 404
 
+
 @app.route('/games/by-genre')
 def get_games_by_genre():
     genre = request.args.get('genre')
@@ -108,6 +115,7 @@ def get_games_by_genre():
     else:
         return jsonify({"error": "No games found"}), 404
 
+
 @app.route('/games/by-year')
 def get_games_by_year():
     year = request.args.get('year')
@@ -121,6 +129,7 @@ def get_games_by_year():
         return render_template_string(render_games(games))
     else:
         return jsonify({"error": "No games found"}), 404
+
 
 def render_game(game):
     return f'''
@@ -142,6 +151,7 @@ def render_game(game):
     </html>
     '''
 
+
 def render_games(games):
     game_entries = ''.join([f'''
         <li>
@@ -153,7 +163,7 @@ def render_games(games):
           </ul>
         </li>
     ''' for game in games])
-    
+
     return f'''
     <!doctype html>
     <html lang="en">
@@ -170,6 +180,7 @@ def render_games(games):
       </body>
     </html>
     '''
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
