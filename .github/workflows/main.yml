@@ -12,6 +12,13 @@ jobs:
       DOCKER_IMAGE: 'movsho/game-searcher'
       DOCKER_HELM: 'movsho/game-searcher-helm'
       GIT_BRANCH: 'main'
+      MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+      MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
+      MONGO_DB_NAME: ${{ secrets.MONGO_DB_NAME }}
+      MONGO_DB_USER: ${{ secrets.MONGO_DB_USER }}
+      MONGO_DB_PASS: ${{ secrets.MONGO_DB_PASS }}
+      MONGO_HOST: ${{ secrets.MONGO_HOST }}
+      MONGO_PORT: ${{ secrets.MONGO_PORT }}
 
     steps:
       - name: Checkout code
@@ -51,10 +58,3 @@ jobs:
           helm package helm
           echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
           helm push game-searcher-helm-${{ env.VERSION }}.tgz oci://registry-1.docker.io/movsho/
-
-  env:
-    MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
-    MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
-    MONGO_DB_NAME: ${{ secrets.MONGO_DB_NAME }}
-    MONGO_DB_USER: ${{ secrets.MONGO_DB_USER }}
-    MONGO_DB_PASS: ${{ secrets.MONGO_DB_PASS }}
