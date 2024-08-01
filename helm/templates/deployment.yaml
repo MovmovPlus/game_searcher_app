@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "game-searcher.fullname" . }}
+  labels:
+    app: {{ include "game-searcher.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "game-searcher.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "game-searcher.name" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: admin-user
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: admin-password
+        - name: MONGO_HOST
+          value: {{ .Values.mongodb.host }}
+        - name: MONGO_PORT
+          value: "27017"
+        - name: MONGODB_DATABASE
+          value: "UniversalDB"

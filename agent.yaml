@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dind-agent
+spec:
+  containers:
+  - name: dind
+    image: drpsychick/dind-buildx-helm
+    imagePullPolicy: Always
+    securityContext:
+      privileged: true
+    volumeMounts:
+    - mountPath: /var/run
+      name: docker-sock
+  volumes:
+  - name: docker-sock
+    emptyDir: {}

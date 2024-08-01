@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "game-searcher.fullname" . }}
+  labels:
+    app: {{ include "game-searcher.name" . }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 5000
+  selector:
+    app: {{ include "game-searcher.name" . }}

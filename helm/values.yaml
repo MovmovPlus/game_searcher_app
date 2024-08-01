@@ -1,0 +1,16 @@
+replicaCount: 1
+
+image:
+  repository: movsho/game-searcher
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: LoadBalancer
+  port: 5000
+
+mongodb:
+  host: "my-release-mongodb.default.svc.cluster.local"
+  port: "27017"
+
+resources: {}

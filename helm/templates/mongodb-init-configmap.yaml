@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-initdb-script
+  namespace: default
+data:
+  init.js: |
+    db = db.getSiblingDB('UniversalDB');
+    db.createCollection('games');

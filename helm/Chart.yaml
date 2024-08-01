@@ -1,0 +1,5 @@
+apiVersion: v2
+name: game-searcher-helm
+description: A Helm chart for deploying game-searcher application
+version: 0.1.0
+appVersion: "1.0"

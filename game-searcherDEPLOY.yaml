@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-searcher
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: game-searcher
+  template:
+    metadata:
+      labels:
+        app: game-searcher
+    spec:
+      containers:
+      - name: game-searcher
+        image: movsho/game-searcher:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGODB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: app-user
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: app-password
+        - name: MONGO_HOST
+          value: my-release-mongodb.default.svc.cluster.local  # Ensure this matches your MongoDB service's DNS name
+        - name: MONGO_PORT
+          value: "27017"  # Updated to the correct port
+        - name: MONGODB_DATABASE
+          value: UniversalDB
