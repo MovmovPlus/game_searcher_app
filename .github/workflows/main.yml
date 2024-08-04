@@ -55,4 +55,4 @@ jobs:
         run: |
           helm package helm
           echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
-          helm push game-searcher-helm-${{ env.VERSION }}.tgz oci://registry-1.docker.io/movsho/
+          helm push game-searcher-helm-${{ env.VERSION }}.tgz oci://registry-1.docker.io/movsho/game-searcher-helm
