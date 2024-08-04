@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://gitlab.com/sela-tracks/1099/students/movmov/Application/game_searcher_app.git'
+    repoURL: 'https://github.com/MovmovPlus/game_searcher_app'
     targetRevision: HEAD
     path: helm
   destination:
