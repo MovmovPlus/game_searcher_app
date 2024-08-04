@@ -44,7 +44,7 @@ jobs:
 
       - name: Push Docker image
         run: |
-          echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+          echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
           docker push $DOCKER_IMAGE:${{ env.VERSION }}
 
       - name: Install Helm
@@ -54,5 +54,5 @@ jobs:
       - name: Build and push Helm chart
         run: |
           helm package helm
-          echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+          echo "${{ secrets.DOCKER_PASS }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
           helm push game-searcher-helm-${{ env.VERSION }}.tgz oci://registry-1.docker.io/movsho/
