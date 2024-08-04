@@ -33,11 +33,9 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
 
-      - name: Extract version from file
-        id: extract_version
-        run: |
-          VERSION=$(cat VERSION.txt)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Set version
+        id: set_version
+        run: echo "VERSION=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Build Docker image
         run: |
