@@ -30,8 +30,8 @@ spec:
               name: mongo-secret
               key: app-password
         - name: MONGO_HOST
-          value: my-release-mongodb.default.svc.cluster.local  # Ensure this matches your MongoDB service's DNS name
+          value: my-release-mongodb.default.svc.cluster.local
         - name: MONGO_PORT
-          value: "27017"  # Updated to the correct port
+          value: "27017"
         - name: MONGODB_DATABASE
           value: UniversalDB
