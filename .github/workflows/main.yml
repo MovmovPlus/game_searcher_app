@@ -35,7 +35,7 @@ jobs:
 
       - name: Set version
         id: set_version
-        run: echo "VERSION=${GITHUB_SHA::7}" >> $GITHUB_ENV
+        run: echo "VERSION=0.1.0-${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Build Docker image
         run: docker build -f ./Dockerfile -t ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }} .
