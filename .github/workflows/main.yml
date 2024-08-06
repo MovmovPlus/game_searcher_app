@@ -55,5 +55,5 @@ jobs:
       - name: Build and push Helm chart
         run: |
           helm package helm
-          ls -al game-searcher-helm-${{ env.VERSION }}.tgz
-          helm push game-searcher-helm-${{ env.VERSION }}.tgz ${{ env.DOCKER_HELM }}
+          ls -al game-searcher-helm-0.1.0-${{ github.sha::7 }}.tgz
+          helm push game-searcher-helm-0.1.0-${{ github.sha::7 }}.tgz ${{ env.DOCKER_HELM }}
