@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_IMAGE: 'movsho/game-searcher'
-      DOCKER_HELM: 'movsho/game-searcher-helm'
+      DOCKER_HELM: 'oci://registry-1.docker.io/movsho/game-searcher-helm'
       GIT_BRANCH: 'main'
       MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
       MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
@@ -49,7 +49,11 @@ jobs:
       - name: Replace version in Chart.yaml
         run: sed -i 's/PLACEHOLDER_VERSION/${{ env.VERSION }}/' helm/Chart.yaml
 
+      - name: Log in to Helm OCI registry
+        run: helm registry login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASS }} registry-1.docker.io
+
       - name: Build and push Helm chart
         run: |
           helm package helm
-          helm push game-searcher-helm-${{ env.VERSION }}.tgz oci://registry-1.docker.io/${{ env.DOCKER_HELM }}/
+          ls -al game-searcher-helm-${{ env.VERSION }}.tgz
+          helm push game-searcher-helm-${{ env.VERSION }}.tgz ${{ env.DOCKER_HELM }}
